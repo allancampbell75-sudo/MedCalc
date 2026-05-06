@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeMedicate Revision Website</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #e2e8f0;
+      --accent: #0f172a;
+      --accent-2: #0284c7;
+      --good-bg: #ecfdf5;
+      --good-line: #a7f3d0;
+      --bad-bg: #fff1f2;
+      --bad-line: #fecdd3;
+      --soft-blue: #eff6ff;
+      --soft-violet: #f5f3ff;
+      --soft-amber: #fffbeb;
+      --soft-indigo: #eef2ff;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .mobile-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(248, 250, 252, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 16px;
+    }
+    .mobile-nav-grid, .desktop-nav-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .mobile-nav-grid { grid-template-columns: repeat(5, 1fr); }
+    .desktop-nav-grid { grid-template-columns: repeat(4, auto); }
+    .grid-top {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    .hero h1 {
+      margin: 12px 0 0;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+    .hero p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .badge.sky { background: #e0f2fe; color: #0369a1; }
+    .badge.green { background: #dcfce7; color: #15803d; }
+    .badge.slate { background: #f1f5f9; color: #334155; }
+    .badge.amber { background: #fef3c7; color: #b45309; }
+    .badge.violet { background: #ede9fe; color: #7c3aed; }
+
+    .button {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .button.sky {
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+      color: white;
+    }
+    .button.block { width: 100%; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .muted { color: var(--muted); }
+    .small { font-size: 14px; }
+    .tiny { font-size: 12px; }
+    .section-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .practice-grid { grid-template-columns: 1fr; }
+    .calculators-grid { grid-template-columns: 1fr; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .mock-grid { grid-template-columns: 1fr; }
+    .input, .select {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 14px;
+      background: white;
+    }
+    .field-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .stack { display: grid; gap: 12px; }
+    .result-card {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+    }
+    .result-card.sky { background: var(--soft-blue); border-color: #bae6fd; }
+    .result-card.indigo { background: var(--soft-indigo); border-color: #c7d2fe; }
+    .result-card.amber { background: var(--soft-amber); border-color: #fde68a; }
+    .result-card.violet { background: var(--soft-violet); border-color: #ddd6fe; }
+    .result-card.green { background: #ecfdf5; border-color: #bbf7d0; }
+    .result-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+    .feedback {
+      margin-top: 16px;
+      border-radius: 24px;
+      padding: 16px;
+      border: 1px solid;
+    }
+    .feedback.good { background: var(--good-bg); border-color: var(--good-line); }
+    .feedback.bad { background: var(--bad-bg); border-color: var(--bad-line); }
+    .checks { display: grid; gap: 12px; }
+    .check-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .pass-pill, .check-pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .pass-pill { background: #dcfce7; color: #15803d; }
+    .check-pill { background: #ffe4e6; color: #be123c; }
+    .footer-note {
+      margin-top: 24px;
+      background: #0f172a;
+      color: white;
+      border-radius: 24px;
+      padding: 20px;
+    }
+    .hidden { display: none !important; }
+    .desktop-nav { display: none; }
+    .question-card, .mock-question { border: 1px solid var(--line); border-radius: 24px; padding: 16px; }
+    .inline-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .two-cards { display: grid; gap: 12px; }
+
+    @media (min-width: 640px) {
+      .container { padding: 24px; }
+      .card { padding: 24px; }
+      .field-grid-2 { grid-template-columns: 1fr 1fr; }
+      .formula-grid { grid-template-columns: 1fr 1fr; }
+      .two-cards { grid-template-columns: 1fr 1fr; }
+      .desktop-nav { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    }
+    @media (min-width: 1024px) {
+      .grid-top { grid-template-columns: 1.5fr 1fr; }
+      .practice-grid { grid-template-columns: 320px 1fr; }
+      .formula-grid { grid-template-columns: repeat(3, 1fr); }
+      .calculators-grid { grid-template-columns: repeat(4, 1fr); }
+      .mock-grid { grid-template-columns: 1fr 320px; }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <button class="button primary" data-mode-btn="practice">Practice</button>
+      <button class="button" data-mode-btn="formula">Formulas</button>
+      <button class="button" data-mode-btn="calculator">Tools</button>
+      <button class="button" data-mode-btn="mock">Mock</button>
+      <button class="button" data-mode-btn="oscequiz">OSCE</button>
+      <button class="button" data-mode-btn="vivaquiz">Viva</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid-top">
+      <div class="card hero">
+        <div class="badges">
+          <span class="badge sky">SafeMedicate Revision</span>
+          <span class="badge green">Practice only</span>
+        </div>
+        <h1>Medication calculations practice website</h1>
+        <p>Revise drug calculations with worked methods, quick formulas, calculators, and a mock exam. This site is designed for learning and practice, not for bypassing assessments.</p>
+        <div class="desktop-nav">
+          <button class="button primary" data-mode-btn="practice">Practice mode</button>
+          <button class="button" data-mode-btn="formula">Formula sheet</button>
+          <button class="button" data-mode-btn="calculator">Calculators</button>
+          <button class="button" data-mode-btn="mock">Mock exam</button>
+          <button class="button" data-mode-btn="oscequiz">OSCE quiz</button>
+          <button class="button" data-mode-btn="vivaquiz">Viva quiz</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="card">
+          <div class="muted small">Attempted</div>
+          <div class="stat-number" id="statAttempted">0</div>
+        </div>
+        <div class="card">
+          <div class="muted small">Correct</div>
+          <div class="stat-number" id="statCorrect">0</div>
+        </div>
+        <div class="card">
+          <div class="muted small">Score</div>
+          <div class="stat-number" id="statScore">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <section id="practiceSection" class="section-grid practice-grid">
+      <div class="card">
+        <h2>Filters</h2>
+        <div class="stack" style="margin-top:16px;">
+          <div>
+            <label class="small muted">Topic</label>
+            <select id="topicFilter" class="select" style="margin-top:8px;"></select>
+          </div>
+          <div>
+            <label class="small muted">Difficulty</label>
+            <select id="levelFilter" class="select" style="margin-top:8px;">
+              <option>All</option>
+              <option>Easy</option>
+              <option>Medium</option>
+              <option>Hard</option>
+            </select>
+          </div>
+          <button class="button primary block" id="resetSessionBtn">Reset session</button>
+        </div>
+      </div>
+
+      <div class="card" id="practiceCard"></div>
+    </section>
+
+    <section id="formulaSection" class="section-grid formula-grid hidden"></section>
+
+    <section id="calculatorSection" class="section-grid calculators-grid hidden">
+      <div class="card">
+        <div class="tiny muted">TABLET AND CAPSULE TOOL</div>
+        <h3>How many to give</h3>
+        <div class="stack" style="margin-top:16px;">
+          <div class="field-grid-2">
+            <input id="tabletRequired" class="input" placeholder="Required dose" />
+            <select id="tabletRequiredUnit" class="select">
+              <option value="mcg">micrograms</option>
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+            </select>
+          </div>
+          <div class="field-grid-2">
+            <input id="tabletStrength" class="input" placeholder="Strength per tablet or capsule" />
+            <select id="tabletStrengthUnit" class="select">
+              <option value="mcg">micrograms</option>
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+            </select>
+          </div>
+          <select id="tabletType" class="select">
+            <option value="tablets">tablets</option>
+            <option value="capsules">capsules</option>
+          </select>
+        </div>
+        <div class="result-card indigo" style="margin-top:16px;">
+          <div class="small muted">Amount to give</div>
+          <div class="tiny muted" style="margin-top:6px;">The calculator converts between micrograms, mg, and g automatically.</div>
+          <div class="result-value" id="tabletResult">—</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tiny muted">DOSAGE CALCULATOR</div>
+        <h3>How many mL to give</h3>
+        <div class="stack" style="margin-top:16px;">
+          <div class="field-grid-2">
+            <input id="doseRequired" class="input" placeholder="Required dose" />
+            <select id="doseRequiredUnit" class="select">
+              <option value="mcg">micrograms</option>
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+            </select>
+          </div>
+          <div class="field-grid-2">
+            <input id="doseStock" class="input" placeholder="Stock dose" />
+            <select id="doseStockUnit" class="select">
+              <option value="mcg">micrograms</option>
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+            </select>
+          </div>
+          <input id="doseVolume" class="input" placeholder="Stock volume in mL" />
+        </div>
+        <div class="result-card sky" style="margin-top:16px;">
+          <div class="small muted">Result</div>
+          <div class="tiny muted" style="margin-top:6px;">The calculator converts between micrograms, mg, and g automatically.</div>
+          <div class="result-value" id="dosageResult">—</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tiny muted">IV RATES</div>
+        <h3>mL/hour and drops/min</h3>
+        <div class="stack" style="margin-top:16px;">
+          <input id="ivVolume" class="input" placeholder="Volume in mL" />
+          <input id="ivHours" class="input" placeholder="Time in hours" />
+          <input id="dropFactor" class="input" placeholder="Drop factor (drops/mL)" />
+        </div>
+        <div class="two-cards" style="margin-top:16px;">
+          <div class="result-card green">
+            <div class="small muted">mL/hour</div>
+            <div class="result-value" id="ivRateResult">—</div>
+          </div>
+          <div class="result-card violet">
+            <div class="small muted">drops/min</div>
+            <div class="result-value" id="dropsResult">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tiny muted">UNIT CONVERSION</div>
+        <h3>Quick converter</h3>
+        <div class="stack" style="margin-top:16px;">
+          <input id="convValue" class="input" placeholder="Enter value" />
+          <div class="field-grid-2">
+            <select id="convFrom" class="select">
+              <option value="mcg">mcg</option>
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+              <option value="mL">mL</option>
+              <option value="L">L</option>
+            </select>
+            <select id="convTo" class="select">
+              <option value="mcg">mcg</option>
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+              <option value="mL">mL</option>
+              <option value="L">L</option>
+            </select>
+          </div>
+        </div>
+        <div class="result-card amber" style="margin-top:16px;">
+          <div class="small muted">Converted value</div>
+          <div class="result-value" id="convResult">—</div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1;">
+        <div class="tiny muted">EXAMPLE CHECKS</div>
+        <h3>Built-in answer checks</h3>
+        <div class="checks" id="checksList" style="margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section id="mockSection" class="section-grid mock-grid hidden">
+      <div class="card" id="mockMain"></div>
+      <div class="stack">
+        <div class="card">
+          <div class="small muted">Timer</div>
+          <div class="result-value" id="mockTimer">15:00</div>
+        </div>
+        <div class="card">
+          <div class="small muted">Questions answered</div>
+          <div class="result-value" id="mockAnswered">0/6</div>
+        </div>
+        <div class="card">
+          <div class="small muted">Result</div>
+          <div class="result-value" id="mockResult">—</div>
+          <div class="small muted" id="mockResultText" style="margin-top:8px;">Submit to see your result.</div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section id="oscequizSection" class="section-grid hidden">
+      <div class="card">
+        <div class="tiny muted">NI617 OSCE + VIVA</div>
+        <h2>Interactive OSCE revision quiz</h2>
+        <p class="muted">Randomised NI617 OSCE assessment questions focused on proformas, landmarks, professionalism, accuracy and safe escalation. Choose an answer to get instant feedback.</p>
+        <div class="inline-row" style="margin-top:12px;">
+          <span class="badge sky" id="osceQuizProgress">Question 1 of 10</span>
+          <span class="badge green" id="osceQuizScore">Score: 0</span>
+        </div>
+      </div>
+
+      <div class="card" id="osceQuizCard"></div>
+    </section>
+
+
+
+    <section id="vivaquizSection" class="section-grid hidden">
+      <div class="card">
+        <div class="tiny muted">NI617 ORAL ASSESSMENT</div>
+        <h2>Interactive Viva revision quiz</h2>
+        <p class="muted">Randomised viva questions focused on acute/chronic interpretation, body-system links, priority referrals, escalation and SBAR handover.</p>
+        <div class="inline-row" style="margin-top:12px;">
+          <span class="badge sky" id="vivaQuizProgress">Question 1 of 10</span>
+          <span class="badge green" id="vivaQuizScore">Score: 0</span>
+        </div>
+      </div>
+
+      <div class="card" id="vivaQuizCard"></div>
+    </section>
+
+    <div class="footer-note">
+      <h2 style="margin:0;">How to use this safely</h2>
+      <p style="margin:12px 0 0; color:#cbd5e1; line-height:1.6;">Always follow your course guidance, local policy, and supervised checking processes. Use this tool to practise methods and confidence, then verify every real clinical calculation according to your training setting.</p>
+    </div>
+  </div>
+
+  <script>
+    const questionBank = [
+      { id: 1, topic: 'Tablet calculations', level: 'Easy', question: 'A patient is prescribed 500 mg of paracetamol. Stock tablets are 250 mg each. How many tablets are needed?', answer: '2', unit: 'tablets', explanation: 'Use prescribed dose ÷ stock strength. 500 mg ÷ 250 mg = 2 tablets.' },
+      { id: 2, topic: 'Liquid medicines', level: 'Easy', question: 'A patient needs 250 mg of a medicine. The bottle contains 125 mg in 5 mL. How many mL are required?', answer: '10', unit: 'mL', explanation: '250 ÷ 125 = 2, then 2 × 5 mL = 10 mL.' },
+      { id: 3, topic: 'Unit conversions', level: 'Easy', question: 'Convert 0.75 g to mg.', answer: '750', unit: 'mg', explanation: '1 g = 1000 mg, so 0.75 × 1000 = 750 mg.' },
+      { id: 4, topic: 'Infusions', level: 'Medium', question: '1000 mL of fluid is to run over 8 hours. What is the rate in mL/hour?', answer: '125', unit: 'mL/hour', explanation: '1000 mL ÷ 8 hours = 125 mL/hour.' },
+      { id: 5, topic: 'Drops per minute', level: 'Medium', question: '500 mL is prescribed over 4 hours using a giving set of 20 drops/mL. What is the rate in drops/minute?', answer: '42', unit: 'drops/min', explanation: '(500 × 20) ÷ 240 = 41.67, rounded to 42 drops/min.' },
+      { id: 6, topic: 'Weight-based dosing', level: 'Medium', question: 'A drug is prescribed at 5 mg/kg for a patient weighing 68 kg. What total dose is needed?', answer: '340', unit: 'mg', explanation: '5 × 68 = 340 mg.' },
+      { id: 7, topic: 'Insulin', level: 'Hard', question: 'A patient requires 18 units of insulin. The insulin pen contains 100 units/mL. How many mL is this?', answer: '0.18', unit: 'mL', explanation: '18 ÷ 100 = 0.18 mL.' },
+      { id: 8, topic: 'Micrograms and milligrams', level: 'Hard', question: 'Convert 400 micrograms to mg.', answer: '0.4', unit: 'mg', explanation: '1000 micrograms = 1 mg, so 400 micrograms = 0.4 mg.' },
+      { id: 9, topic: 'Syringe driver', level: 'Hard', question: '24 mg of a medicine is to be given evenly over 24 hours. What is the hourly dose?', answer: '1', unit: 'mg/hour', explanation: '24 mg ÷ 24 hours = 1 mg/hour.' },
+      { id: 10, topic: 'Volume from stock', level: 'Medium', question: 'A patient is prescribed 150 mg. Stock available is 75 mg in 2 mL. How many mL are needed?', answer: '4', unit: 'mL', explanation: '150 mg is double 75 mg, so double 2 mL = 4 mL.' }
+    ];
+
+    const formulas = [
+      { title: 'Tablets / capsules', formula: 'Prescribed dose ÷ stock strength = quantity to give' },
+      { title: 'Liquid medicines', formula: '(Prescribed dose ÷ stock dose) × stock volume = mL to give' },
+      { title: 'Infusion rate', formula: 'Total volume ÷ time = mL/hour' },
+      { title: 'Drops per minute', formula: '(Volume × drop factor) ÷ time in minutes = drops/minute' },
+      { title: 'Weight-based dose', formula: 'Dose per kg × body weight = required dose' },
+      { title: 'Conversions', formula: '1 g = 1000 mg, 1 mg = 1000 micrograms, 1 L = 1000 mL' }
+    ];
+
+    const conversionUnitMap = { mcg: 0.001, mg: 1, g: 1000, mL: 1, L: 1000 };
+    const massUnits = ['mcg', 'mg', 'g'];
+    const volumeUnits = ['mL', 'L'];
+
+    const state = {
+      mode: 'practice',
+      topicFilter: 'All',
+      levelFilter: 'All',
+      currentIndex: 0,
+      userAnswer: '',
+      submitted: false,
+      results: { correct: 0, attempted: 0 },
+      showMethod: false,
+      mockExamStarted: false,
+      mockExamSubmitted: false,
+      mockExamAnswers: {},
+      mockExamSecondsLeft: 900,
+      mockTimerId: null
+    };
+
+    function parsePositiveNumber(value) {
+      const parsed = Number.parseFloat(value);
+      if (Number.isNaN(parsed) || parsed <= 0) return null;
+      return parsed;
+    }
+    function formatNumber(value, decimals = 2) {
+      return value.toFixed(decimals).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1');
+    }
+    function normalizeAnswer(value) { return String(value).trim().replace(/,/g, ''); }
+    function convertMassValue(value, fromUnit, toUnit) {
+      if (!massUnits.includes(fromUnit) || !massUnits.includes(toUnit)) return null;
+      return (value * conversionUnitMap[fromUnit]) / conversionUnitMap[toUnit];
+    }
+    function calculateTabletCount(requiredDose, requiredUnit, strengthPerTablet, strengthUnit) {
+      const required = parsePositiveNumber(requiredDose);
+      const strength = parsePositiveNumber(strengthPerTablet);
+      if (required === null || strength === null) return '';
+      const requiredInStrengthUnit = convertMassValue(required, requiredUnit, strengthUnit);
+      if (requiredInStrengthUnit === null) return '';
+      return formatNumber(requiredInStrengthUnit / strength, 2);
+    }
+    function calculateDosage(requiredDose, requiredUnit, stockDose, stockUnit, stockVolume) {
+      const required = parsePositiveNumber(requiredDose);
+      const stock = parsePositiveNumber(stockDose);
+      const volume = parsePositiveNumber(stockVolume);
+      if (required === null || stock === null || volume === null) return '';
+      const requiredInStockUnit = convertMassValue(required, requiredUnit, stockUnit);
+      if (requiredInStockUnit === null) return '';
+      return formatNumber((requiredInStockUnit / stock) * volume);
+    }
+    function calculateIvMlPerHour(volumeValue, hoursValue) {
+      const volume = parsePositiveNumber(volumeValue);
+      const hours = parsePositiveNumber(hoursValue);
+      if (volume === null || hours === null) return '';
+      return formatNumber(volume / hours);
+    }
+    function calculateDropsPerMinute(volumeValue, hoursValue, dropFactorValue) {
+      const volume = parsePositiveNumber(volumeValue);
+      const hours = parsePositiveNumber(hoursValue);
+      const factor = parsePositiveNumber(dropFactorValue);
+      if (volume === null || hours === null || factor === null) return '';
+      return String(Math.round((volume * factor) / (hours * 60)));
+    }
+    function convertUnits(valueText, fromUnit, toUnit) {
+      const value = Number.parseFloat(valueText);
+      if (Number.isNaN(value)) return '';
+      const sameCategory = (massUnits.includes(fromUnit) && massUnits.includes(toUnit)) || (volumeUnits.includes(fromUnit) && volumeUnits.includes(toUnit));
+      if (!sameCategory) return 'Incompatible units';
+      const converted = (value * conversionUnitMap[fromUnit]) / conversionUnitMap[toUnit];
+      return formatNumber(converted, 3);
+    }
+    function getTopics() { return ['All', ...new Set(questionBank.map(q => q.topic))]; }
+    function getFilteredQuestions() {
+      return questionBank.filter(q => (state.topicFilter === 'All' || q.topic === state.topicFilter) && (state.levelFilter === 'All' || q.level === state.levelFilter));
+    }
+
+    function renderTopicOptions() {
+      const select = document.getElementById('topicFilter');
+      select.innerHTML = getTopics().map(topic => `<option value="${topic}">${topic}</option>`).join('');
+      select.value = state.topicFilter;
+    }
+
+    function updateStats() {
+      document.getElementById('statAttempted').textContent = state.results.attempted;
+      document.getElementById('statCorrect').textContent = state.results.correct;
+      const pct = state.results.attempted ? Math.round((state.results.correct / state.results.attempted) * 100) : 0;
+      document.getElementById('statScore').textContent = pct + '%';
+    }
+
+    function setMode(mode) {
+      state.mode = mode;
+      ['practice','formula','calculator','mock','oscequiz','vivaquiz'].forEach(m => {
+        document.getElementById(m + 'Section').classList.toggle('hidden', m !== mode);
+      });
+      document.querySelectorAll('[data-mode-btn]').forEach(btn => {
+        const active = btn.getAttribute('data-mode-btn') === mode;
+        btn.classList.toggle('primary', active);
+      });
+    }
+
+    function renderPractice() {
+      const card = document.getElementById('practiceCard');
+      const filtered = getFilteredQuestions();
+      const safeIndex = state.currentIndex >= filtered.length ? 0 : state.currentIndex;
+      const question = filtered[safeIndex] || null;
+
+      if (!question) {
+        card.innerHTML = '<div class="question-card muted">No questions match those filters.</div>';
+        return;
+      }
+
+      const isCorrect = normalizeAnswer(state.userAnswer) === normalizeAnswer(question.answer);
+      card.innerHTML = `
+        <div class="inline-row" style="margin-bottom:16px;">
+          <span class="badge slate">${question.topic}</span>
+          <span class="badge amber">${question.level}</span>
+          <span class="badge violet">Question ${safeIndex + 1} of ${filtered.length}</span>
+        </div>
+        <h2 style="margin:0; line-height:1.4;">${question.question}</h2>
+        <div class="stack" style="margin-top:16px;">
+          <label class="small muted">Your answer</label>
+          <input id="practiceAnswerInput" class="input" value="${state.userAnswer.replace(/"/g,'&quot;')}" placeholder="Enter answer in ${question.unit}" />
+          <button id="checkAnswerBtn" class="button sky" style="width:fit-content;">Check answer</button>
+        </div>
+        ${state.submitted ? `
+          <div class="feedback ${isCorrect ? 'good' : 'bad'}">
+            <div style="font-weight:700; font-size:18px;">${isCorrect ? 'Correct' : 'Not quite'}</div>
+            <div style="margin-top:8px;">Correct answer: <strong>${question.answer} ${question.unit}</strong></div>
+            <div class="stack" style="margin-top:12px;">
+              <div class="inline-row">
+                <button id="toggleMethodBtn" class="button">${state.showMethod ? 'Hide method' : 'Show method'}</button>
+                <button id="nextQuestionBtn" class="button primary">Next question</button>
+              </div>
+              ${state.showMethod ? `<div class="result-card" style="background:white;"><div class="tiny muted">WORKED EXPLANATION</div><div style="margin-top:8px; line-height:1.6;">${question.explanation}</div></div>` : ''}
+            </div>
+          </div>` : ''}
+      `;
+
+      document.getElementById('practiceAnswerInput').addEventListener('input', e => { state.userAnswer = e.target.value; });
+      document.getElementById('checkAnswerBtn').addEventListener('click', () => {
+        if (!state.userAnswer.trim() || state.submitted) return;
+        state.submitted = true;
+        state.results.attempted += 1;
+        if (isCorrect) state.results.correct += 1;
+        updateStats();
+        renderPractice();
+      });
+      if (state.submitted) {
+        document.getElementById('toggleMethodBtn').addEventListener('click', () => { state.showMethod = !state.showMethod; renderPractice(); });
+        document.getElementById('nextQuestionBtn').addEventListener('click', () => {
+          state.currentIndex = safeIndex + 1 >= filtered.length ? 0 : safeIndex + 1;
+          state.userAnswer = '';
+          state.submitted = false;
+          state.showMethod = false;
+          renderPractice();
+        });
+      }
+    }
+
+    function renderFormulas() {
+      const container = document.getElementById('formulaSection');
+      container.innerHTML = formulas.map(item => `
+        <div class="card">
+          <div class="tiny muted">FORMULA</div>
+          <h3>${item.title}</h3>
+          <p class="muted" style="line-height:1.7;">${item.formula}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderChecks() {
+      const checks = [
+        { label: 'Tablet example', input: '500 mg needed, 250 mg per tablet', output: `${calculateTabletCount('500', 'mg', '250', 'mg')} tablets`, expected: '2 tablets' },
+        { label: 'Dosage example', input: '250 mg needed, 125 mg in 5 mL', output: `${calculateDosage('250', 'mg', '125', 'mg', '5')} mL`, expected: '10 mL' },
+        { label: 'Dosage unit conversion example', input: '0.25 g needed, 125 mg in 5 mL', output: `${calculateDosage('0.25', 'g', '125', 'mg', '5')} mL`, expected: '10 mL' },
+        { label: 'IV rate example', input: '1000 mL over 8 hours', output: `${calculateIvMlPerHour('1000', '8')} mL/hour`, expected: '125 mL/hour' },
+        { label: 'Drops per minute example', input: '500 mL over 4 hours at 20 drops/mL', output: `${calculateDropsPerMinute('500', '4', '20')} drops/min`, expected: '42 drops/min' },
+        { label: 'Conversion example', input: '0.75 g to mg', output: `${convertUnits('0.75', 'g', 'mg')} mg`, expected: '750 mg' },
+        { label: 'Conversion mismatch example', input: '1 g to mL', output: convertUnits('1', 'g', 'mL'), expected: 'Incompatible units' }
+      ];
+      document.getElementById('checksList').innerHTML = checks.map(check => {
+        const pass = check.output === check.expected;
+        return `
+          <div class="check-item">
+            <div class="inline-row" style="justify-content:space-between;">
+              <div style="font-weight:600;">${check.label}</div>
+              <span class="${pass ? 'pass-pill' : 'check-pill'}">${pass ? 'Pass' : 'Check'}</span>
+            </div>
+            <div class="small muted" style="margin-top:8px;">${check.input}</div>
+            <div class="small" style="margin-top:6px;">Output: ${check.output}</div>
+            <div class="small">Expected: ${check.expected}</div>
+          </div>`;
+      }).join('');
+    }
+
+    function renderCalculators() {
+      const tabletResult = calculateTabletCount(
+        document.getElementById('tabletRequired').value,
+        document.getElementById('tabletRequiredUnit').value,
+        document.getElementById('tabletStrength').value,
+        document.getElementById('tabletStrengthUnit').value
+      );
+      document.getElementById('tabletResult').textContent = tabletResult ? `${tabletResult} ${document.getElementById('tabletType').value}` : '—';
+
+      const dosageResult = calculateDosage(
+        document.getElementById('doseRequired').value,
+        document.getElementById('doseRequiredUnit').value,
+        document.getElementById('doseStock').value,
+        document.getElementById('doseStockUnit').value,
+        document.getElementById('doseVolume').value
+      );
+      document.getElementById('dosageResult').textContent = dosageResult ? `${dosageResult} mL` : '—';
+
+      const ivRate = calculateIvMlPerHour(document.getElementById('ivVolume').value, document.getElementById('ivHours').value);
+      document.getElementById('ivRateResult').textContent = ivRate || '—';
+
+      const drops = calculateDropsPerMinute(document.getElementById('ivVolume').value, document.getElementById('ivHours').value, document.getElementById('dropFactor').value);
+      document.getElementById('dropsResult').textContent = drops || '—';
+
+      const conv = convertUnits(document.getElementById('convValue').value, document.getElementById('convFrom').value, document.getElementById('convTo').value);
+      document.getElementById('convResult').textContent = conv || '—';
+
+      renderChecks();
+    }
+
+    function renderMock() {
+      const mockQuestions = questionBank.slice(0, 6);
+      const main = document.getElementById('mockMain');
+      const answeredCount = Object.values(state.mockExamAnswers).filter(v => String(v).trim() !== '').length;
+      document.getElementById('mockAnswered').textContent = `${answeredCount}/${mockQuestions.length}`;
+      const correctCount = mockQuestions.filter(q => normalizeAnswer(state.mockExamAnswers[q.id] || '') === normalizeAnswer(q.answer)).length;
+      const pct = Math.round((correctCount / mockQuestions.length) * 100);
+      document.getElementById('mockResult').textContent = state.mockExamSubmitted ? `${pct}%` : '—';
+      document.getElementById('mockResultText').textContent = state.mockExamSubmitted ? (pct >= 90 ? 'Pass — strong attempt.' : 'Review — keep practising.') : 'Submit to see your result.';
+      const mins = String(Math.floor(state.mockExamSecondsLeft / 60)).padStart(2, '0');
+      const secs = String(state.mockExamSecondsLeft % 60).padStart(2, '0');
+      document.getElementById('mockTimer').textContent = `${mins}:${secs}`;
+
+      if (!state.mockExamStarted) {
+        main.innerHTML = `
+          <div class="stack">
+            <div>
+              <div class="tiny muted">MOCK EXAM</div>
+              <h2>Timed practice test</h2>
+              <p class="muted">Answer 6 questions in 15 minutes. Your score is shown at the end with pass or review feedback.</p>
+            </div>
+            <div class="two-cards" style="grid-template-columns:repeat(3,1fr);">
+              <div class="result-card"><div class="small muted">Questions</div><div class="result-value">6</div></div>
+              <div class="result-card"><div class="small muted">Time</div><div class="result-value">15 min</div></div>
+              <div class="result-card"><div class="small muted">Target</div><div class="result-value">90%</div></div>
+            </div>
+            <button id="startMockBtn" class="button primary" style="width:fit-content;">Start mock exam</button>
+          </div>`;
+        document.getElementById('startMockBtn').addEventListener('click', () => {
+          state.mockExamStarted = true;
+          state.mockExamSubmitted = false;
+          state.mockExamAnswers = {};
+          state.mockExamSecondsLeft = 900;
+          startMockTimer();
+          renderMock();
+        });
+        return;
+      }
+
+      main.innerHTML = mockQuestions.map((q, i) => {
+        const userVal = state.mockExamAnswers[q.id] || '';
+        const answerCorrect = normalizeAnswer(userVal) === normalizeAnswer(q.answer);
+        return `
+          <div class="mock-question" style="margin-bottom:16px;">
+            <div class="inline-row" style="margin-bottom:12px;">
+              <span class="badge violet">Question ${i + 1}</span>
+              <span class="badge slate">${q.topic}</span>
+            </div>
+            <div style="font-weight:600; line-height:1.6;">${q.question}</div>
+            <div class="stack" style="margin-top:12px;">
+              <input class="input mock-answer-input" data-qid="${q.id}" value="${String(userVal).replace(/"/g,'&quot;')}" ${state.mockExamSubmitted ? 'disabled' : ''} placeholder="Answer in ${q.unit}" />
+              ${state.mockExamSubmitted ? `
+                <div class="feedback ${answerCorrect ? 'good' : 'bad'}">
+                  <div style="font-weight:700;">${answerCorrect ? 'Correct' : 'Review this one'}</div>
+                  <div class="small" style="margin-top:6px;">Correct answer: <strong>${q.answer} ${q.unit}</strong></div>
+                  <div class="small" style="margin-top:8px;">${q.explanation}</div>
+                </div>` : ''}
+            </div>
+          </div>`;
+      }).join('') + `
+        <div class="inline-row">
+          ${!state.mockExamSubmitted ? '<button id="submitMockBtn" class="button sky">Submit mock exam</button>' : ''}
+          <button id="resetMockBtn" class="button">Reset mock exam</button>
+        </div>`;
+
+      document.querySelectorAll('.mock-answer-input').forEach(input => {
+        input.addEventListener('input', e => {
+          state.mockExamAnswers[e.target.getAttribute('data-qid')] = e.target.value;
+          renderMock();
+        });
+      });
+      if (!state.mockExamSubmitted) {
+        document.getElementById('submitMockBtn').addEventListener('click', () => {
+          state.mockExamSubmitted = true;
+          stopMockTimer();
+          renderMock();
+        });
+      }
+      document.getElementById('resetMockBtn').addEventListener('click', () => {
+        state.mockExamStarted = false;
+        state.mockExamSubmitted = false;
+        state.mockExamAnswers = {};
+        state.mockExamSecondsLeft = 900;
+        stopMockTimer();
+        renderMock();
+      });
+    }
+
+    function startMockTimer() {
+      stopMockTimer();
+      state.mockTimerId = setInterval(() => {
+        if (state.mockExamSubmitted) { stopMockTimer(); return; }
+        state.mockExamSecondsLeft -= 1;
+        if (state.mockExamSecondsLeft <= 0) {
+          state.mockExamSecondsLeft = 0;
+          state.mockExamSubmitted = true;
+          stopMockTimer();
+        }
+        renderMock();
+      }, 1000);
+    }
+    function stopMockTimer() {
+      if (state.mockTimerId) clearInterval(state.mockTimerId);
+      state.mockTimerId = null;
+    }
+
+
+
+    const osceQuizQuestionBank = [
+      {
+        category: 'OSCE structure',
+        question: 'What is the best overall OSCE assessment structure?',
+        answers: ['History → diagnosis → finish', 'Prepare/professional intro → focused history → inspection → palpation → auscultation → summary/escalation', 'Auscultation → palpation → history', 'SBAR only'],
+        correct: 1,
+        explanation: 'Use the proforma structure: prepare professionally, take a focused history, inspect, palpate, auscultate, then summarise findings and escalate concerns.'
+      },
+      {
+        category: 'Professionalism',
+        question: 'Which action should happen before touching or exposing the patient/manikin?',
+        answers: ['Start auscultation immediately', 'Introduce yourself, gain consent, maintain dignity/privacy and clean hands', 'Ask only about pain', 'Give a diagnosis'],
+        correct: 1,
+        explanation: 'Professionalism marks come from communication, consent, dignity, privacy and infection prevention throughout.'
+      },
+      {
+        category: 'Baseline observations',
+        question: 'In the OSCE, what should you say about observations?',
+        answers: ['Only mention blood pressure', 'State you would review RR, SpO₂, BP, HR, temperature and ACVPU, with rationale', 'Do not mention observations', 'Only mention NEWS2 after finishing'],
+        correct: 1,
+        explanation: 'You usually do not physically take observations in the OSCE, but you should clearly state which baseline observations you would check and why they matter.'
+      },
+      {
+        category: 'Focused history',
+        question: 'What makes a focused history stronger for marking?',
+        answers: ['Asking one closed question only', 'Medical/social/mental health/family history, medication/allergies, plus at least 3 symptoms with significance', 'Skipping history to save time', 'Only asking about allergies'],
+        correct: 1,
+        explanation: 'Higher marks come from linking symptoms to possible clinical significance rather than just listing questions.'
+      },
+      {
+        category: 'Respiratory history',
+        question: 'Which set of symptoms is most relevant to a respiratory focused history?',
+        answers: ['Breathlessness, cough/sputum, wheeze, chest pain, fever/chills, fatigue', 'Dysuria, urinary frequency and haematuria only', 'Photophobia and rash only', 'Hearing loss and tinnitus only'],
+        correct: 0,
+        explanation: 'Respiratory focused history should explore breathlessness, cough/sputum, wheeze, chest pain/discomfort, fever/chills and fatigue with rationales.'
+      },
+      {
+        category: 'Cardiovascular history',
+        question: 'Which symptom should be assessed using SOCRATES in a cardiovascular assessment?',
+        answers: ['Chest pain/discomfort', 'Hair colour', 'Hand dominance', 'Sleep position only'],
+        correct: 0,
+        explanation: 'Chest pain should be explored using SOCRATES because radiation, severity and associated symptoms may suggest cardiac causes.'
+      },
+      {
+        category: 'Respiratory inspection',
+        question: 'What should you inspect during respiratory assessment?',
+        answers: ['Only the front of the chest', 'Hands, face/eyes/mouth, respiratory rate/effort/depth/rhythm, chest shape, anterior and posterior thorax', 'Only pedal pulses', 'Only bowel sounds'],
+        correct: 1,
+        explanation: 'Respiratory inspection is systematic and includes hands, face, teeth/gums, fingers, breathing pattern, chest shape and both anterior and posterior thorax.'
+      },
+      {
+        category: 'Respiratory inspection',
+        question: 'What may asterixis indicate in respiratory assessment?',
+        answers: ['Hypercapnia/CO₂ retention', 'Normal finding in all adults', 'Improved oxygenation', 'Fractured rib only'],
+        correct: 0,
+        explanation: 'Asterixis can be associated with hypercapnia and is relevant when considering respiratory failure.'
+      },
+      {
+        category: 'Respiratory inspection',
+        question: 'What does finger clubbing commonly suggest in respiratory/cardiovascular assessment?',
+        answers: ['Long-term lung or heart disease', 'Normal acute anxiety only', 'Low blood glucose only', 'Healthy perfusion'],
+        correct: 0,
+        explanation: 'Clubbing can be associated with chronic respiratory or cardiovascular disease and should be interpreted in context.'
+      },
+      {
+        category: 'Respiratory inspection',
+        question: 'Which breathing pattern would be concerning during inspection?',
+        answers: ['Normal rate, depth and rhythm', 'Tachypnoea, accessory muscle use, shallow breathing, gasping or paradoxical breathing', 'Quiet comfortable breathing only', 'Normal chest symmetry'],
+        correct: 1,
+        explanation: 'Abnormal respiratory effort, depth, rhythm or accessory muscle use can indicate respiratory distress.'
+      },
+      {
+        category: 'Respiratory palpation',
+        question: 'Which respiratory palpation elements should you demonstrate?',
+        answers: ['Trachea, thoracic bony structures and posterior chest expansion', 'Only abdominal deep palpation', 'Only radial pulse', 'Only heart sounds'],
+        correct: 0,
+        explanation: 'Respiratory palpation includes tracheal position, bony structures, tenderness and symmetrical chest expansion.'
+      },
+      {
+        category: 'Respiratory palpation',
+        question: 'What may tracheal deviation indicate?',
+        answers: ['Possible thoracic pathology requiring escalation', 'Always normal', 'Medication allergy only', 'Normal swallow function'],
+        correct: 0,
+        explanation: 'A deviated trachea is abnormal and may indicate significant thoracic pathology, so it should be recognised and escalated.'
+      },
+      {
+        category: 'Respiratory palpation',
+        question: 'How do you assess posterior chest expansion?',
+        answers: ['Place thumbs at the posterior midline and observe symmetrical movement on inspiration', 'Press hard over the abdomen', 'Listen over the mitral area', 'Ask the patient to swallow water'],
+        correct: 0,
+        explanation: 'Posterior chest expansion is assessed by placing thumbs at the midline and watching for symmetrical outward movement during inspiration.'
+      },
+      {
+        category: 'Respiratory auscultation',
+        question: 'What is the correct respiratory auscultation approach?',
+        answers: ['One place only on the front', 'Anterior, posterior and lateral surfaces, apex to base including axillae, comparing both sides', 'Only over the abdomen', 'Only over the carotid artery'],
+        correct: 1,
+        explanation: 'Use a systematic step-ladder approach from apex to base across anterior, posterior and lateral lung fields, comparing left and right.'
+      },
+      {
+        category: 'Respiratory auscultation',
+        question: 'Which stethoscope side is used for breath sounds in the proforma?',
+        answers: ['Diaphragm', 'Bell only', 'No stethoscope', 'Either side without explaining'],
+        correct: 0,
+        explanation: 'The respiratory proforma asks you to listen to breath sounds for a full respiratory cycle with the diaphragm.'
+      },
+      {
+        category: 'Respiratory auscultation',
+        question: 'What can crackles suggest in respiratory assessment?',
+        answers: ['Fluid, infection or consolidation depending on context', 'Normal breath sounds only', 'Normal bowel sounds', 'Only anxiety'],
+        correct: 0,
+        explanation: 'Crackles may suggest fluid overload, pulmonary oedema, infection or consolidation and should be linked to the scenario.'
+      },
+      {
+        category: 'Respiratory auscultation',
+        question: 'What does expiratory wheeze most commonly suggest?',
+        answers: ['Airway narrowing/obstruction such as asthma or COPD', 'Normal vesicular breathing', 'Improved airway flow', 'Abdominal obstruction'],
+        correct: 0,
+        explanation: 'Wheeze is commonly linked to narrowed airways and should be interpreted with RR, SpO₂, work of breathing and history.'
+      },
+      {
+        category: 'Cardiovascular inspection',
+        question: 'Which finding around the eyes can suggest high lipid levels/cardiovascular risk?',
+        answers: ['Xanthelasma or corneal arcus', 'Normal white sclera only', 'Equal pupils only', 'Clear voice'],
+        correct: 0,
+        explanation: 'Xanthelasma and corneal arcus can be associated with high lipid levels and cardiovascular risk, though context matters.'
+      },
+      {
+        category: 'Cardiovascular palpation',
+        question: 'Where is the apex beat usually located?',
+        answers: ['2nd intercostal space right sternal border', '4th–5th intercostal space, mid-clavicular line', 'Right upper abdominal quadrant', 'Above the clavicle only'],
+        correct: 1,
+        explanation: 'The cardiovascular proforma uses the 4th–5th intercostal space at the mid-clavicular line for the apex beat.'
+      },
+      {
+        category: 'Cardiovascular palpation',
+        question: 'Why compare apex and radial pulse if able?',
+        answers: ['To identify an apex-radial deficit/irregularity', 'To check bowel obstruction', 'To assess swallow safety', 'To diagnose asthma only'],
+        correct: 0,
+        explanation: 'A difference between apex and radial pulse can suggest a pulse deficit, often associated with arrhythmias.'
+      },
+      {
+        category: 'Cardiovascular palpation',
+        question: 'Which pulses are listed in the cardiovascular proforma?',
+        answers: ['Pedal, radial, brachial and carotid', 'Temporal only', 'Femoral only with no rationale', 'No pulses'],
+        correct: 0,
+        explanation: 'The proforma includes pedal, radial, brachial and carotid pulses, assessing strength and rhythm.'
+      },
+      {
+        category: 'Cardiovascular auscultation',
+        question: 'What is the correct cardiac auscultation sequence?',
+        answers: ['Aortic, Pulmonic, Erb’s, Tricuspid, Mitral', 'Mitral, Abdomen, Trachea, Bowel', 'Right upper, left upper, left lower, right lower', 'Situation, Background, Assessment, Recommendation'],
+        correct: 0,
+        explanation: 'A-P-E-T-M: Aortic, Pulmonic, Erb’s point, Tricuspid and Mitral.'
+      },
+      {
+        category: 'Cardiovascular auscultation',
+        question: 'Where is the aortic area auscultated?',
+        answers: ['2nd intercostal space, right sternal border', '2nd intercostal space, left sternal border', '5th intercostal space, mid-clavicular line', 'Left lower abdominal quadrant'],
+        correct: 0,
+        explanation: 'The aortic area is auscultated at the 2nd intercostal space on the right sternal border.'
+      },
+      {
+        category: 'Cardiovascular auscultation',
+        question: 'Where is the pulmonic area auscultated?',
+        answers: ['2nd intercostal space, left sternal border', '2nd intercostal space, right sternal border', '3rd intercostal space right', 'Umbilicus'],
+        correct: 0,
+        explanation: 'The pulmonic area is usually at the 2nd intercostal space on the left sternal border.'
+      },
+      {
+        category: 'Cardiovascular auscultation',
+        question: 'Where is Erb’s point auscultated?',
+        answers: ['3rd intercostal space, left sternal border', '5th intercostal space, mid-clavicular line', 'Right upper abdominal quadrant', 'Over the scapula only'],
+        correct: 0,
+        explanation: 'Erb’s point is usually at the 3rd intercostal space on the left sternal border.'
+      },
+      {
+        category: 'Cardiovascular auscultation',
+        question: 'Where is the mitral area auscultated?',
+        answers: ['5th intercostal space, mid-clavicular line', '2nd intercostal space right', 'Above the clavicle', 'Right lower quadrant'],
+        correct: 0,
+        explanation: 'The mitral area is at the 5th intercostal space on the mid-clavicular line.'
+      },
+      {
+        category: 'Cardiovascular auscultation',
+        question: 'What do S1 and S2 represent?',
+        answers: ['Closure of heart valves producing normal lub-dub sounds', 'Bowel obstruction sounds', 'Only lung crackles', 'Respiratory rate'],
+        correct: 0,
+        explanation: 'S1 and S2 are normal heart sounds related to valve closure; additional sounds or murmurs should be recognised as abnormal.'
+      },
+      {
+        category: 'Abdominal/swallow',
+        question: 'What order is used in abdominal assessment after inspection?',
+        answers: ['Auscultation before palpation', 'Palpation before auscultation always', 'Only percussion', 'No assessment needed'],
+        correct: 0,
+        explanation: 'For abdominal assessment, auscultation is done before palpation because palpation can alter bowel sounds.'
+      },
+      {
+        category: 'Abdominal auscultation',
+        question: 'How should bowel sounds be auscultated?',
+        answers: ['Clockwise in all four quadrants', 'Only over the chest', 'Only one second in one place', 'Over the carotid'],
+        correct: 0,
+        explanation: 'The proforma expects clockwise auscultation in right upper, left upper, left lower and right lower quadrants.'
+      },
+      {
+        category: 'Bedside swallow',
+        question: 'Which finding suggests poor swallow function and need for SALT referral?',
+        answers: ['Coughing/choking, wet or muffled voice, drooling or poor tongue control', 'Clear voice and good cough', 'Normal head control', 'Stable SpO₂ with no coughing'],
+        correct: 0,
+        explanation: 'Signs such as coughing/choking, wet voice, drooling, poor tongue control or reduced SpO₂ after swallow suggest unsafe swallow and need escalation/referral.'
+      },
+      {
+        category: 'Summary/escalation',
+        question: 'What is the safest way to end an OSCE assessment?',
+        answers: ['Summarise main findings, state concerns and say who you would escalate to', 'Walk out after auscultation', 'Only thank the examiner', 'Give a fixed diagnosis without escalation'],
+        correct: 0,
+        explanation: 'A clear summary and escalation demonstrates safety, clinical reasoning and professional responsibility.'
+      },
+      {
+        category: 'Oral/viva',
+        question: 'What should a viva answer include?',
+        answers: ['Acute, chronic and acute-on-chronic issues linked to body systems, with referral priorities and SBAR', 'Only the patient age', 'Only a list of observations', 'Only one diagnosis'],
+        correct: 0,
+        explanation: 'The viva is marked on interpretation, system links, clinical decision-making, referrals and escalation.'
+      },
+      {
+        category: 'Oral/viva',
+        question: 'What does SBAR stand for?',
+        answers: ['Situation, Background, Assessment, Recommendation', 'Symptoms, Breathing, Action, Review', 'System, Body, Airway, Referral', 'Summary, Baseline, Acute, Respiratory'],
+        correct: 0,
+        explanation: 'SBAR is a structured communication tool used to escalate and hand over safely.'
+      }
+    ];
+
+    const OSCE_QUIZ_LENGTH = 12;
+    let osceQuizData = [];
+    const osceQuizState = { current: 0, score: 0, answered: false, selected: null };
+
+    function shuffleArray(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomizeOsceQuiz() {
+      osceQuizData = shuffleArray(osceQuizQuestionBank).slice(0, OSCE_QUIZ_LENGTH).map(q => {
+        const answerObjects = q.answers.map((text, index) => ({ text, originalIndex: index }));
+        const shuffledAnswers = shuffleArray(answerObjects);
+        return {
+          ...q,
+          answers: shuffledAnswers.map(a => a.text),
+          correct: shuffledAnswers.findIndex(a => a.originalIndex === q.correct)
+        };
+      });
+      osceQuizState.current = 0;
+      osceQuizState.score = 0;
+      osceQuizState.answered = false;
+      osceQuizState.selected = null;
+    }
+
+    function renderOsceQuiz() {
+      const card = document.getElementById('osceQuizCard');
+      const progress = document.getElementById('osceQuizProgress');
+      const scoreBadge = document.getElementById('osceQuizScore');
+      if (!card || !progress || !scoreBadge) return;
+
+      if (osceQuizState.current >= osceQuizData.length) {
+        const pct = Math.round((osceQuizState.score / osceQuizData.length) * 100);
+        progress.textContent = 'Complete';
+        scoreBadge.textContent = `Final score: ${osceQuizState.score}/${osceQuizData.length}`;
+        card.innerHTML = `
+          <div style="text-align:center; padding:20px;">
+            <div class="tiny muted">FINAL SCORE</div>
+            <div class="result-value">${pct}%</div>
+            <p class="muted">${pct >= 80 ? 'Excellent landmark knowledge.' : pct >= 60 ? 'Good — keep practising rationale and escalation.' : 'Revise landmarks, WHY statements and SBAR.'}</p>
+            <button id="restartOsceQuizBtn" class="button primary">Restart OSCE quiz</button>
+          </div>`;
+        document.getElementById('restartOsceQuizBtn').addEventListener('click', () => {
+          randomizeOsceQuiz();
+          renderOsceQuiz();
+        });
+        return;
+      }
+
+      const q = osceQuizData[osceQuizState.current];
+      progress.textContent = `Question ${osceQuizState.current + 1} of ${osceQuizData.length}`;
+      scoreBadge.textContent = `Score: ${osceQuizState.score}`;
+
+      card.innerHTML = `
+        <div class="question-card">
+          <h2 style="margin-top:0; line-height:1.4;">${q.question}</h2>
+          <div class="stack" style="margin-top:16px;">
+            ${q.answers.map((answer, index) => {
+              let cls = 'button block';
+              if (osceQuizState.answered && index === q.correct) cls += ' sky';
+              if (osceQuizState.answered && index === osceQuizState.selected && index !== q.correct) cls += ' primary';
+              return `<button class="${cls} osce-answer-btn" data-index="${index}" ${osceQuizState.answered ? 'disabled' : ''}>${answer}</button>`;
+            }).join('')}
+          </div>
+          ${osceQuizState.answered ? `
+            <div class="feedback ${osceQuizState.selected === q.correct ? 'good' : 'bad'}">
+              <div style="font-weight:700;">${osceQuizState.selected === q.correct ? 'Correct' : 'Review this'}</div>
+              <div style="margin-top:8px; line-height:1.6;">${q.explanation}</div>
+            </div>
+            <button id="nextOsceQuizBtn" class="button primary" style="margin-top:16px;">Next question</button>
+          ` : ''}
+        </div>`;
+
+      document.querySelectorAll('.osce-answer-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const selected = Number(e.target.getAttribute('data-index'));
+          osceQuizState.selected = selected;
+          osceQuizState.answered = true;
+          if (selected === q.correct) osceQuizState.score += 1;
+          renderOsceQuiz();
+        });
+      });
+
+      const nextBtn = document.getElementById('nextOsceQuizBtn');
+      if (nextBtn) nextBtn.addEventListener('click', () => {
+        osceQuizState.current += 1;
+        osceQuizState.answered = false;
+        osceQuizState.selected = null;
+        renderOsceQuiz();
+      });
+    }
+
+
+    const vivaQuizQuestionBank = [
+      {
+        category: 'Viva structure',
+        question: 'What is the best structure for answering NI617 oral assessment questions?',
+        answers: ['Categorise acute/chronic, link to systems, prioritise referrals, then use SBAR', 'Give one diagnosis only', 'Only read the observations out', 'Start with long-term referrals first'],
+        correct: 0,
+        explanation: 'Strong viva answers categorise acute, chronic and acute-on-chronic concerns, link findings to body systems, prioritise urgent escalation and use SBAR.'
+      },
+      {
+        category: 'Acute/chronic',
+        question: 'What does acute-on-chronic mean?',
+        answers: ['A worsening or new deterioration on top of an existing long-term condition', 'A completely normal finding', 'Only a social problem', 'A chronic condition with no change'],
+        correct: 0,
+        explanation: 'Acute-on-chronic means the person has a known long-term condition, such as COPD, with a new deterioration or exacerbation.'
+      },
+      {
+        category: 'Body-system links',
+        question: 'Which four body-system areas should you link to in the viva?',
+        answers: ['Respiratory, cardiovascular, abdominal/bedside swallow and musculoskeletal', 'Only respiratory', 'Only cardiovascular and skin', 'Only medication calculations'],
+        correct: 0,
+        explanation: 'The oral assessment expects you to interpret findings across respiratory, cardiovascular, abdominal/bedside swallow and musculoskeletal systems.'
+      },
+      {
+        category: 'Prioritisation',
+        question: 'In a deteriorating patient, who is usually the first priority referral?',
+        answers: ['Doctor or senior clinician/outreach team for urgent review', 'Dietician only', 'Routine physiotherapy only', 'No referral until next week'],
+        correct: 0,
+        explanation: 'Urgent deterioration needs escalation first to a doctor, senior clinician or outreach team depending on setting.'
+      },
+      {
+        category: 'SBAR',
+        question: 'What does SBAR stand for?',
+        answers: ['Situation, Background, Assessment, Recommendation', 'Symptoms, Breathing, Abdomen, Review', 'System, Baseline, Action, Respiratory', 'Signs, Bloods, Airway, Response'],
+        correct: 0,
+        explanation: 'SBAR is Situation, Background, Assessment and Recommendation. It structures a safe handover.'
+      },
+      {
+        category: 'SBAR recommendation',
+        question: 'Which is the strongest SBAR recommendation?',
+        answers: ['I request urgent medical review within 30 minutes due to deterioration and possible respiratory failure/sepsis', 'Please review whenever convenient', 'I am not sure what I want', 'No action required'],
+        correct: 0,
+        explanation: 'A strong recommendation gives a clear action and timeframe, linked to clinical risk.'
+      },
+      {
+        category: 'Gruber case',
+        question: 'Tobius Gruber has COPD, confusion, shallow breathing, wheeze and falling oxygen saturation. What is a priority concern?',
+        answers: ['Acute-on-chronic respiratory deterioration, possible type 2 respiratory failure or infective COPD exacerbation', 'Only chronic back pain', 'No concern because COPD patients always look confused', 'Only diet review'],
+        correct: 0,
+        explanation: 'In COPD, new confusion, shallow breathing and respiratory changes raise concern for deterioration including type 2 respiratory failure or infection.'
+      },
+      {
+        category: 'Gruber escalation',
+        question: 'For Gruber on an elderly medicine ward with NEWS2 deterioration and confusion, who should be prioritised?',
+        answers: ['Senior doctor/outreach team urgently', 'Routine social services first', 'Dietician first', 'No one'],
+        correct: 0,
+        explanation: 'The priority is urgent senior clinical review because of deterioration, confusion and possible respiratory failure or sepsis.'
+      },
+      {
+        category: 'Darren case',
+        question: 'Darren has drowsiness/confusion, jaundice/yellow sclera, itchy skin and ascites. What is the main concern?',
+        answers: ['Possible acute liver failure or decompensated liver disease needing urgent hospital review', 'Simple tiredness only', 'Normal gaming-related fatigue', 'Only mild back pain'],
+        correct: 0,
+        explanation: 'Drowsiness/confusion with jaundice, itch and ascites suggests significant liver dysfunction and needs urgent escalation.'
+      },
+      {
+        category: 'Darren referral',
+        question: 'For Darren at home in UCR with possible liver failure and reduced consciousness, what is the safest first escalation?',
+        answers: ['Paramedic/urgent hospital assessment or GP-led emergency escalation depending local pathway', 'Routine dietician only', 'Wait two weeks', 'Physio only'],
+        correct: 0,
+        explanation: 'Reduced consciousness and possible liver failure in the community requires urgent escalation for acute hospital assessment.'
+      },
+      {
+        category: 'Anna case',
+        question: 'Anna Dawson has crackles, temperature rise, fatigue, diabetes and a non-healing leg ulcer. What acute concern should be prioritised?',
+        answers: ['Possible infection/early sepsis, pneumonia or worsening infected leg ulcer', 'Only chronic ageing', 'No concern because NEWS is low', 'Only social isolation'],
+        correct: 0,
+        explanation: 'Low NEWS does not remove concern. Crackles, raised temperature and a chronic ulcer can suggest infection or early sepsis.'
+      },
+      {
+        category: 'Anna referrals',
+        question: 'Which referrals fit Anna Dawson once urgent concerns are escalated?',
+        answers: ['GP/medical review, tissue viability nurse, diabetic nurse, dietician, OT/physio/social support as needed', 'Only dentist', 'Only mental health and no wound review', 'No MDT input'],
+        correct: 0,
+        explanation: 'Anna needs prioritised medical review for acute risk, plus MDT input for wound, diabetes, diet, mobility and home support.'
+      },
+      {
+        category: 'Cheryl case',
+        question: 'Cheryl has heavier painful periods, syncope, breathlessness, pale conjunctiva and tachycardia. What should you suspect?',
+        answers: ['Possible anaemia or acute blood loss requiring GP review and bloods', 'Only asthma with no other concerns', 'Normal menstruation only', 'Muscle strain only'],
+        correct: 0,
+        explanation: 'Syncope, breathlessness, pallor and tachycardia in the context of heavy bleeding suggest anaemia or blood loss requiring urgent review.'
+      },
+      {
+        category: 'Clinical reasoning',
+        question: 'Which phrase best demonstrates Level 6 clinical reasoning?',
+        answers: ['This is significant because it may indicate deterioration and requires escalation', 'It is just abnormal', 'I would ignore this', 'The patient is fine'],
+        correct: 0,
+        explanation: 'Use phrases that interpret the finding, explain why it matters and state the required action.'
+      },
+      {
+        category: 'Referral rationale',
+        question: 'Why should you explain the rationale for each referral?',
+        answers: ['It shows decision-making, prioritisation and understanding of your role in the MDT', 'It wastes time', 'It is only for high grades and unsafe otherwise', 'It replaces assessment'],
+        correct: 0,
+        explanation: 'The marking criteria reward clinical decision-making, referral rationale and escalation of concerns.'
+      },
+      {
+        category: 'Scope of role',
+        question: 'How should you show awareness of your nursing role in the viva?',
+        answers: ['Recognise deterioration, escalate appropriately, communicate clearly and continue safe monitoring', 'Prescribe medication independently outside scope', 'Discharge without review', 'Ignore MDT input'],
+        correct: 0,
+        explanation: 'A safe nursing response recognises limits, escalates concerns, communicates using SBAR and maintains monitoring.'
+      },
+      {
+        category: 'Prioritisation',
+        question: 'Which answer shows the best prioritisation?',
+        answers: ['I would first address immediate risk to life, then urgent referrals, then longer-term MDT needs', 'I would start with the least urgent issue', 'I would list everything with no order', 'I would avoid escalation'],
+        correct: 0,
+        explanation: 'Prioritise by clinical urgency: immediate deterioration first, then urgent support, then longer-term MDT planning.'
+      },
+      {
+        category: 'System links',
+        question: 'Breathlessness can link to which systems in a viva answer?',
+        answers: ['Respiratory and cardiovascular, and sometimes anaemia/abdominal causes depending context', 'Only musculoskeletal', 'Only skin', 'No system links'],
+        correct: 0,
+        explanation: 'Breathlessness may be respiratory, cardiovascular or related to anaemia/metabolic causes, so context matters.'
+      },
+      {
+        category: 'Viva fail point',
+        question: 'What is a common viva fail point?',
+        answers: ['Listing findings without interpretation or escalation', 'Using SBAR', 'Prioritising urgent risk', 'Linking to systems'],
+        correct: 0,
+        explanation: 'A list alone is descriptive. Marks come from interpretation, prioritisation and safe clinical decision-making.'
+      },
+      {
+        category: 'Final safety',
+        question: 'What should your final viva answer always make clear?',
+        answers: ['What you are worried about, who you will tell, and how quickly they need to review', 'Only the patient name', 'Only the chronic conditions', 'Nothing after the first sentence'],
+        correct: 0,
+        explanation: 'Clear concern, escalation route and timeframe demonstrate safety and professional responsibility.'
+      }
+    ];
+
+    const VIVA_QUIZ_LENGTH = 12;
+    let vivaQuizData = [];
+    const vivaQuizState = { current: 0, score: 0, answered: false, selected: null };
+
+    function randomizeVivaQuiz() {
+      vivaQuizData = shuffleArray(vivaQuizQuestionBank).slice(0, VIVA_QUIZ_LENGTH).map(q => {
+        const answerObjects = q.answers.map((text, index) => ({ text, originalIndex: index }));
+        const shuffledAnswers = shuffleArray(answerObjects);
+        return {
+          ...q,
+          answers: shuffledAnswers.map(a => a.text),
+          correct: shuffledAnswers.findIndex(a => a.originalIndex === q.correct)
+        };
+      });
+      vivaQuizState.current = 0;
+      vivaQuizState.score = 0;
+      vivaQuizState.answered = false;
+      vivaQuizState.selected = null;
+    }
+
+    function renderVivaQuiz() {
+      const card = document.getElementById('vivaQuizCard');
+      const progress = document.getElementById('vivaQuizProgress');
+      const scoreBadge = document.getElementById('vivaQuizScore');
+      if (!card || !progress || !scoreBadge) return;
+
+      if (vivaQuizState.current >= vivaQuizData.length) {
+        const pct = Math.round((vivaQuizState.score / vivaQuizData.length) * 100);
+        progress.textContent = 'Complete';
+        scoreBadge.textContent = `Final score: ${vivaQuizState.score}/${vivaQuizData.length}`;
+        card.innerHTML = `
+          <div style="text-align:center; padding:20px;">
+            <div class="tiny muted">FINAL VIVA SCORE</div>
+            <div class="result-value">${pct}%</div>
+            <p class="muted">${pct >= 80 ? 'Excellent — strong clinical reasoning and escalation.' : pct >= 60 ? 'Good — keep practising SBAR and system links.' : 'Revise acute/chronic sorting, referral priorities and SBAR.'}</p>
+            <button id="restartVivaQuizBtn" class="button primary">Restart Viva quiz</button>
+          </div>`;
+        document.getElementById('restartVivaQuizBtn').addEventListener('click', () => {
+          randomizeVivaQuiz();
+          renderVivaQuiz();
+        });
+        return;
+      }
+
+      const q = vivaQuizData[vivaQuizState.current];
+      progress.textContent = `Question ${vivaQuizState.current + 1} of ${vivaQuizData.length}`;
+      scoreBadge.textContent = `Score: ${vivaQuizState.score}`;
+
+      card.innerHTML = `
+        <div class="question-card">
+          <div class="inline-row" style="margin-bottom:12px;"><span class="badge violet">${q.category}</span></div>
+          <h2 style="margin-top:0; line-height:1.4;">${q.question}</h2>
+          <div class="stack" style="margin-top:16px;">
+            ${q.answers.map((answer, index) => {
+              let cls = 'button block';
+              if (vivaQuizState.answered && index === q.correct) cls += ' sky';
+              if (vivaQuizState.answered && index === vivaQuizState.selected && index !== q.correct) cls += ' primary';
+              return `<button class="${cls} viva-answer-btn" data-index="${index}" ${vivaQuizState.answered ? 'disabled' : ''}>${answer}</button>`;
+            }).join('')}
+          </div>
+          ${vivaQuizState.answered ? `
+            <div class="feedback ${vivaQuizState.selected === q.correct ? 'good' : 'bad'}">
+              <div style="font-weight:700;">${vivaQuizState.selected === q.correct ? 'Correct' : 'Review this'}</div>
+              <div style="margin-top:8px; line-height:1.6;">${q.explanation}</div>
+            </div>
+            <button id="nextVivaQuizBtn" class="button primary" style="margin-top:16px;">Next question</button>
+          ` : ''}
+        </div>`;
+
+      document.querySelectorAll('.viva-answer-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const selected = Number(e.target.getAttribute('data-index'));
+          vivaQuizState.selected = selected;
+          vivaQuizState.answered = true;
+          if (selected === q.correct) vivaQuizState.score += 1;
+          renderVivaQuiz();
+        });
+      });
+
+      const nextBtn = document.getElementById('nextVivaQuizBtn');
+      if (nextBtn) nextBtn.addEventListener('click', () => {
+        vivaQuizState.current += 1;
+        vivaQuizState.answered = false;
+        vivaQuizState.selected = null;
+        renderVivaQuiz();
+      });
+    }
+
+    function initEvents() {
+      document.querySelectorAll('[data-mode-btn]').forEach(btn => {
+        btn.addEventListener('click', () => setMode(btn.getAttribute('data-mode-btn')));
+      });
+      document.getElementById('topicFilter').addEventListener('change', e => {
+        state.topicFilter = e.target.value; state.currentIndex = 0; state.userAnswer = ''; state.submitted = false; state.showMethod = false; renderPractice();
+      });
+      document.getElementById('levelFilter').addEventListener('change', e => {
+        state.levelFilter = e.target.value; state.currentIndex = 0; state.userAnswer = ''; state.submitted = false; state.showMethod = false; renderPractice();
+      });
+      document.getElementById('resetSessionBtn').addEventListener('click', () => {
+        state.currentIndex = 0; state.userAnswer = ''; state.submitted = false; state.showMethod = false; state.results = { correct: 0, attempted: 0 }; updateStats(); renderPractice();
+      });
+      ['tabletRequired','tabletRequiredUnit','tabletStrength','tabletStrengthUnit','tabletType','doseRequired','doseRequiredUnit','doseStock','doseStockUnit','doseVolume','ivVolume','ivHours','dropFactor','convValue','convFrom','convTo'].forEach(id => {
+        document.getElementById(id).addEventListener('input', renderCalculators);
+        document.getElementById(id).addEventListener('change', renderCalculators);
+      });
+    }
+
+    renderTopicOptions();
+    updateStats();
+    renderPractice();
+    renderFormulas();
+    renderCalculators();
+    renderMock();
+    randomizeOsceQuiz();
+    renderOsceQuiz();
+    randomizeVivaQuiz();
+    renderVivaQuiz();
+    initEvents();
+    setMode('practice');
+  </script>
+</body>
+</html>
